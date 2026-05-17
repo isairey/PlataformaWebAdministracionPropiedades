@@ -194,7 +194,7 @@ Módulo destinado a los inquilinos del sistema.
 # 📂 Estructura del proyecto
 
 ```bash
-PropertyRentalManagementSystem/
+PlataformaWebAdministracionPropiedades/
 │
 ├── Controllers/              # Controladores MVC
 ├── Models/                   # Modelos Entity Framework
@@ -227,7 +227,7 @@ PropertyRentalManagementSystem/
 ## 1️⃣ Clonar repositorio
 
 ```bash
-git clone https://github.com/isairey/PropertyRentalManagementSystem.git
+git clone https://github.com/isairey/PlataformaWebAdministracionPropiedades.git
 ```
 
 ---

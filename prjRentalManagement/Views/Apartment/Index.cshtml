@@ -1,0 +1,114 @@
+﻿@model IEnumerable<prjRentalManagement.Models.apartment>
+@{
+    ViewBag.Title = "Apartments";
+}
+<h2>Apartments</h2>
+
+<!-- Search Bar -->
+@using (Html.BeginForm("Index", "Apartment", FormMethod.Get))
+{
+    <div style="text-align:center;margin-bottom:10px">
+        @Html.TextBox("search", null, new
+        {
+            @style = "padding:8px; width:60%;",
+            @placeholder = "Search by address, city, province, postal code, or other criteria..."
+        })
+        <input type="submit" value="Search Apartment" class="btn btn-primary" />
+    </div>
+}
+
+
+@*The "Create New Apartment" link is displayed only if a property manager is logged in.*@
+@if (Session["manager"] != null)
+{
+    <p>
+        @Html.ActionLink("Create New Apartment", "Create", null, new { @class = "btn btn-primary" })
+    </p>
+}
+@if (!Model.Any())
+{
+    <div class="alert alert-info mt-3">
+        <strong>No assigned apartments found!</strong> There are currently no assigned apartments to display. Please check back later or refine your search.
+    </div>
+}
+else
+            {
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.apartmentNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nbRooms)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.building.address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.building.city)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.building.province)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.building.postalCode)
+        </th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.apartmentNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nbRooms)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.building.address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.building.city)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.building.province)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.building.postalCode)
+            </td>
+            <td>
+                @if (Session["tenant"] != null)
+                {
+                    @Html.ActionLink("Details", "Details", new { id = item.apartmentId }, new { @class = "btn btn-info btn-sm" })
+                }
+                else if (Session["manager"] != null)
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.apartmentId }, new { @class = "btn btn-warning btn-sm" })
+                    @: |
+                    @Html.ActionLink("Details", "Details", new { id = item.apartmentId }, new { @class = "btn btn-info btn-sm" })
+                    @: |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.apartmentId }, new { @class = "btn btn-danger btn-sm" })
+                }
+                else if (Session["owner"] != null)
+                {
+                    @Html.ActionLink("Details", "Details", new { id = item.apartmentId }, new { @class = "btn btn-info btn-sm" })
+                }
+            </td>
+        </tr>
+    }
+</table>
+            }
+

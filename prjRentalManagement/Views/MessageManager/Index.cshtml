@@ -1,0 +1,103 @@
+﻿@model IEnumerable<prjRentalManagement.Models.messageManager>
+@{
+    ViewBag.Title = "Index";
+}
+
+@* Dynamic Title Based on the Session *@
+@if (Session["manager"] != null)
+{
+    <h2>Tenant Messages</h2>
+}
+@if (Session["tenant"] != null)
+{
+    <h2>Manager Messages</h2>
+}
+
+@* Provides a link to create a new message (for Tenant) *@
+@if (Session["tenant"] != null)
+{
+    <p>
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+    </p>
+}
+@if (!Model.Any())
+{
+    <div class="alert alert-info mt-3">
+        <strong>No messages found!</strong> There are no messages to display at the moment.
+    </div>
+}
+else
+            {
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.message)</th>
+        <th>@Html.DisplayNameFor(model => model.responseMessage)</th>
+        @* Manager Name: Displayed only if the current user is NOT a manager *@
+        @if (Session["manager"] == null)
+        {
+            <th>@Html.DisplayNameFor(model => model.manager.name)</th>
+        }
+        @* Tenant Name: Displayed only if the current user is NOT a tenant *@
+        @if (Session["tenant"] == null)
+        {
+            <th>@Html.DisplayNameFor(model => model.tenant.name)</th>
+        }
+        <th>Actions</th>
+    </tr>
+
+    @* Filtering Messages Based on Session *@
+    @if (Session["tenant"] != null)
+    {
+        @* For Tenants: Display messages for the logged-in tenant *@
+        foreach (var item in Model.Where(i => i.tenantId == Convert.ToInt32(Session["tenant"])))
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.message)</td>
+                <td>
+                    @if (string.IsNullOrWhiteSpace(item.responseMessage))
+                    {
+                        <span class="text-muted">No response yet</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.responseMessage)
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.manager.name)</td>
+                <td>
+                    @Html.ActionLink("Edit Message", "Edit", new { id = item.messageId }, new { @class = "btn btn-warning btn-sm" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.messageId }, new { @class = "btn btn-info btn-sm" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.messageId }, new { @class = "btn btn-danger btn-sm" })
+                </td>
+            </tr>
+        }
+    }
+    else if (Session["manager"] != null)
+    {
+        @* For Managers: Display messages for the logged-in manager *@
+        foreach (var item in Model.Where(i => i.managerId == Convert.ToInt32(Session["manager"])))
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.message)</td>
+                <td>
+                    @if (string.IsNullOrWhiteSpace(item.responseMessage))
+                    {
+                        <span class="text-warning">Awaiting your response</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.responseMessage)
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.tenant.name)</td>
+                <td>
+                    @Html.ActionLink("Edit Response", "Edit", new { id = item.messageId }, new { @class = "btn btn-sm btn-warning" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.messageId }, new { @class = "btn btn-sm btn-info" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.messageId }, new { @class = "btn btn-sm btn-danger" })
+                </td>
+            </tr>
+        }
+    }
+</table>
+            }
+

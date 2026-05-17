@@ -1,0 +1,52 @@
+﻿@model prjRentalManagement.Models.messageManager
+@{
+    ViewBag.Title = "Message Manager Details";
+}
+<h2>Message Details</h2>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.message)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.message)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.responseMessage)
+        </dt>
+        <dd>
+            @if (Model.responseMessage == null)
+            {
+                <span>No response message yet.</span>
+            }
+            else
+            {
+                @Html.DisplayFor(model => model.responseMessage)
+            }
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.manager.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.manager.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tenant.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tenant.name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.messageId }, new { @class = "btn btn-success"})
+</p>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

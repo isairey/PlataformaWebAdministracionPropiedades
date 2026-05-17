@@ -1,0 +1,56 @@
+﻿@model prjRentalManagement.Models.appointment
+@{
+    ViewBag.Title = "Delete Appointment";
+}
+
+<h2>Delete Appointment</h2>
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.appointmentDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.appointmentDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.manager.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.manager.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tenant.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tenant.name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions mt-3 mb-3">
+            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this appointment?');"/>
+        </div>
+    }
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+</div>
